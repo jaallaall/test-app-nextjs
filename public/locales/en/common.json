@@ -2,6 +2,7 @@
   "domain": "Test",
   "home": "Home",
   "user": "User",
+  "search": "search",
   "setting": "User settings",
   "persian": "فارسی",
   "english": "English",
@@ -23,5 +24,8 @@
   "please": "facebook please fill 'Confirm'.",
   "ok": "Confirm",
   "delete": "Delete",
-  "edit": "Edit"
+  "edit": "Edit",
+  "duplicate": "The entered path is duplicate",
+  "required": "This field is required",
+  "requiredURLs": "The contents of this field must be URLs"
 }

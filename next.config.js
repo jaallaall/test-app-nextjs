@@ -8,6 +8,7 @@ const nextConfig = {
   experimental: {
     outputStandalone: true,
   },
+  styledComponents: true,
 };
 
 module.exports = nextConfig;

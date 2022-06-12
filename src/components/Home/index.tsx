@@ -1,11 +1,25 @@
 import { Breadcrumbs } from "@mui";
 import AddIcon from "@mui/icons-material/Add";
-import { Button, Container, Paper, Stack, Typography } from "@mui/material";
-import { RouteKey } from "interfaces";
+import CloseIcon from "@mui/icons-material/Close";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  IconButton,
+  Paper,
+  Snackbar,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { Options, RouteKey } from "interfaces";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
+import { useSocials } from "services";
 import AddSocial from "./AddSocial";
+import Search from "./Search";
 import Social from "./Social";
+import AddRoadIcon from "@mui/icons-material/AddRoad";
 
 const bread = [
   { id: 1, title: "home", href: RouteKey.Home },
@@ -15,21 +29,80 @@ const bread = [
 
 const Home: React.FC = (): React.ReactElement => {
   const { t } = useTranslation();
+  const { data, isLoading } = useSocials();
+  const res = data?.sort((a: any, b: any) => b.id - a.id);
   const [open, setOpen] = useState<boolean>(false);
+  const [openSnack, setOpenSnack] = useState<boolean>(false);
+  const [value, setValue] = useState("");
+  const [result, setResult] = useState<Options[]>([]);
 
   const handleClickAdd = () => {
     setOpen(!open);
   };
+
+  const handleClose = (_?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnack(false);
+  };
+
+  const filter = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = e.target.value;
+
+    if (keyword !== "") {
+      const results = res?.filter((item: Options) => {
+        return (
+          item.type.value.toLowerCase().startsWith(keyword.toLowerCase()) ||
+          item.type.faValue.toLowerCase().startsWith(keyword.toLowerCase())
+        );
+      });
+      setResult(results);
+    } else {
+      setResult([]);
+    }
+
+    setValue(keyword);
+  };
+
+  const clearSearch = () => {
+    setResult([]);
+    setValue("");
+  };
+
+  const dataResult = result.length > 0 ? result : res;
+
+  const elm =
+    !dataResult.length && !open ? (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: 250,
+        }}
+      >
+        <AddRoadIcon sx={{ fontSize: 150 }} />
+      </Box>
+    ) : (
+      dataResult?.map((item: Options) => {
+        return <Social key={item.id} data={item} clearSearch={clearSearch} />;
+      })
+    );
 
   return (
     <>
       <Stack component="section" sx={{ pb: 4 }}>
         <Container maxWidth="sm">
           <Breadcrumbs breadcrumbs={bread} />
+
           <Paper elevation={0} sx={{ mt: 5 }}>
             <Typography component="h6" variant="h6" color="inherit" mb={2}>
               {t("path")}
             </Typography>
+            {dataResult?.length > 0 && (
+              <Search handleChange={filter} value={value} />
+            )}
             <Button
               variant="text"
               color="secondary"
@@ -39,18 +112,30 @@ const Home: React.FC = (): React.ReactElement => {
             >
               {t("addPath")}
             </Button>
-            <AddSocial open={open} setOpen={() => setOpen(false)} />
-            <Social />
+            <AddSocial
+              open={open}
+              setOpen={() => setOpen(false)}
+              data={dataResult}
+              setOpenSnack={setOpenSnack}
+            />
+
+            {elm}
           </Paper>
         </Container>
       </Stack>
-      {/* {Boolean(value) && (
+      {openSnack && (
         <Snackbar
-          open={open}
+          open={openSnack}
           autoHideDuration={3000}
           onClose={handleClose}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          message={value}
+          message={t("duplicate")}
+          sx={{
+            "& .MuiPaper-root": {
+              bgcolor: "warning.main",
+              color: "text.secondary",
+            },
+          }}
           action={
             <IconButton
               size="small"
@@ -62,7 +147,7 @@ const Home: React.FC = (): React.ReactElement => {
             </IconButton>
           }
         />
-      )} */}
+      )}
     </>
   );
 };

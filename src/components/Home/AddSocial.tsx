@@ -1,9 +1,9 @@
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import LanguageIcon from "@mui/icons-material/Language";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import TwitterIcon from "@mui/icons-material/Twitter";
-import WebAssetIcon from "@mui/icons-material/WebAsset";
 import { LoadingButton } from "@mui/lab";
 import {
   Autocomplete,
@@ -12,13 +12,17 @@ import {
   Collapse,
   FormHelperText,
   Grid,
+  Paper,
   Stack,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { useFormik } from "formik";
-import { useTranslation } from "next-i18next";
 import { Options } from "interfaces";
+import { useTranslation } from "next-i18next";
+import { useQueryClient } from "react-query";
+import { useAddSocials, useUpdateSocials } from "services";
 import { validationSchema } from "utils";
 
 interface Props {
@@ -26,15 +30,28 @@ interface Props {
   setOpen: () => void;
   title?: string;
   btnTitle?: string;
+  item?: Options;
+  data?: Options[];
+  idEddit?: number | string;
+  setOpenSnack?: (e: any) => void;
 }
 
+export const icons = {
+  TwitterIcon,
+  InstagramIcon,
+  FacebookIcon,
+  TelegramIcon,
+  LinkedInIcon,
+  LanguageIcon,
+};
+
 const options = [
-  { id: 1, value: "twitter", icon: <TwitterIcon /> },
-  { id: 2, value: "instagram", icon: <InstagramIcon /> },
-  { id: 3, value: "facebook", icon: <FacebookIcon /> },
-  { id: 4, value: "telegram", icon: <TelegramIcon /> },
-  { id: 5, value: "linkedIn", icon: <LinkedInIcon /> },
-  { id: 6, value: "website", icon: <WebAssetIcon /> },
+  { id: 1, value: "twitter", faValue: "توییتر", icon: "TwitterIcon" },
+  { id: 2, value: "instagram", faValue: "اینستاگرام", icon: "InstagramIcon" },
+  { id: 3, value: "facebook", faValue: "فیس بوک", icon: "FacebookIcon" },
+  { id: 4, value: "telegram", faValue: "تلگرام", icon: "TelegramIcon" },
+  { id: 5, value: "linkedIn", faValue: "لینکدین", icon: "LinkedInIcon" },
+  { id: 6, value: "website", faValue: "website", icon: "LanguageIcon" },
 ];
 
 const AddSocial: React.FC<Props> = ({
@@ -42,8 +59,17 @@ const AddSocial: React.FC<Props> = ({
   setOpen,
   title,
   btnTitle,
+  item,
+  data,
+  idEddit,
+  setOpenSnack,
 }): React.ReactElement => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const { direction } = useTheme();
+  const { mutate, isLoading } = useAddSocials();
+  const { mutate: mutateUpdate, isLoading: loading } = useUpdateSocials();
+
   const {
     values,
     handleChange,
@@ -53,16 +79,45 @@ const AddSocial: React.FC<Props> = ({
     isValid,
     setFieldValue,
     dirty,
-    handleBlur,
     resetForm,
-  } = useFormik({
+  }: any = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      type: "",
-      link: "",
+      type: item?.type ?? "",
+      link: item?.link ?? "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, { resetForm }) => {
+      const isDuplicate = data?.some((itm) => {
+        return JSON.stringify(itm.type) === JSON.stringify(values.type);
+      });
+      if (isDuplicate) {
+        if (setOpenSnack) setOpenSnack(true);
+      } else {
+        if (idEddit) {
+          mutateUpdate(
+            { ...values, type: values.type, id: idEddit },
+            {
+              onSuccess: () => {
+                resetForm();
+                setOpen();
+                queryClient.fetchInfiniteQuery("socials");
+              },
+            }
+          );
+        } else {
+          mutate(
+            { ...values, type: values.type },
+            {
+              onSuccess: () => {
+                resetForm();
+                setOpen();
+                queryClient.fetchInfiniteQuery("socials");
+              },
+            }
+          );
+        }
+      }
     },
   });
 
@@ -89,15 +144,35 @@ const AddSocial: React.FC<Props> = ({
           {title ? title : t("addPath")}
         </Typography>
         <Grid container spacing={2}>
-          <Grid item md={4}>
+          <Grid item md={4} xs={12}>
             <Autocomplete
-              id="type"
-              value={(values as any).type}
-              onChange={(_, newValue) => setFieldValue("type", newValue)}
-              getOptionLabel={(option: Options) =>
-                option.value ? option.value : ""
-              }
+              onChange={(_, newValue: Options) => {
+                setFieldValue("type", newValue);
+              }}
+              value={item?.type}
+              getOptionLabel={(option: Options) => {
+                return option.value ? t(option.value) : "";
+              }}
+              renderOption={(props, option: any) => {
+                const Icon = (icons as any)[option.icon];
+                return (
+                  <li {...props}>
+                    <Icon sx={{ mr: 1 }} />
+                    {t(option.value)}
+                  </li>
+                );
+              }}
               options={options}
+              PaperComponent={({ children }) => (
+                <Paper
+                  sx={{
+                    p: 0,
+                    direction: direction === "rtl" ? "ltr" : "ltr",
+                  }}
+                >
+                  {children}
+                </Paper>
+              )}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -105,8 +180,6 @@ const AddSocial: React.FC<Props> = ({
                   variant="outlined"
                   color="secondary"
                   fullWidth
-                  onChange={handleChange}
-                  onBlur={handleBlur}
                 />
               )}
             />
@@ -114,7 +187,7 @@ const AddSocial: React.FC<Props> = ({
               <FormHelperText error>{errors.type}</FormHelperText>
             )}
           </Grid>
-          <Grid item md={8}>
+          <Grid item md={8} xs={12}>
             <TextField
               autoComplete="off"
               name="link"
@@ -124,17 +197,29 @@ const AddSocial: React.FC<Props> = ({
               onChange={handleChange}
               value={values.link}
               color="secondary"
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  direction: "rtl",
+                },
+              }}
             />
-            {errors.link && (
-              <FormHelperText error>{errors.link}</FormHelperText>
+            {Boolean(errors.link) && (
+              <FormHelperText error>{errors?.link}</FormHelperText>
             )}
           </Grid>
         </Grid>
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            mt: 3,
+            flexWrap: "wrap",
+          }}
+        >
           <Button
             color="secondary"
             variant="outlined"
-            sx={{ mr: 1.5 }}
+            sx={{ mr: { md: 1.5 }, width: { md: "auto", xs: "100%" } }}
             onClick={handleClickCancle}
           >
             {t("cancel")}
@@ -144,6 +229,8 @@ const AddSocial: React.FC<Props> = ({
             color="secondary"
             variant="outlined"
             disabled={!(isValid && dirty)}
+            loading={isLoading ? isLoading : loading}
+            sx={{ width: { md: "auto", xs: "100%" }, mt: { md: 0, xs: 2 } }}
           >
             {btnTitle ? btnTitle : t("registerAddPath")}
           </LoadingButton>

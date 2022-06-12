@@ -40,7 +40,7 @@ export const AskDialog: React.FC<{
         <Box
           sx={{
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: "space-between",
             alignItems: "center",
             mt: 3,
           }}

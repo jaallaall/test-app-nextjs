@@ -7,11 +7,13 @@ export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
   const locale = dir === "rtl" ? faIR : enUS;
   return createTheme(
     {
-      direction: dir,
+      // direction: dir,
       typography: {
         htmlFontSize: 16,
         fontSize: 14,
-        fontFamily: dir === "rtl" ? "dana" : "Helvetica, Arial, sans-serif",
+        ...(dir === "rtl" && {
+          fontFamily: "dana",
+        }),
       },
       components: {
         MuiCssBaseline: {
@@ -92,14 +94,6 @@ export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
             }),
           },
         },
-        MuiSnackbarContent: {
-          styleOverrides: {
-            root: ({ theme }) => ({
-              backgroundColor: theme.palette.info.main + "!important",
-              color: theme.palette.text.secondary,
-            }),
-          },
-        },
         MuiAlert: {
           styleOverrides: {
             filledSuccess: ({ theme }) => ({
@@ -112,6 +106,7 @@ export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
             root: ({ theme }) => ({
               borderRadius: 6,
               color: theme.palette.text.secondary,
+              direction: dir === "rtl" ? "ltr" : "ltr",
               "& .MuiSvgIcon-root": {
                 color: "inherit",
               },
@@ -187,7 +182,7 @@ export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
         MuiDialog: {
           styleOverrides: {
             paper: ({ theme }) => ({
-              direction: dir === "rtl" ? "ltr" : dir === "ltr" ? "ltr" : "rtl",
+              direction: dir === "rtl" ? "ltr" : "ltr",
               width: "100%",
               overflowY: "inherit",
               margin: 16,
@@ -210,6 +205,13 @@ export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
             root: {
               padding: 16,
             },
+          },
+        },
+        MuiInputLabel: {
+          styleOverrides: {
+            root: ({ theme }) => ({
+              color: theme.palette.grey[100],
+            }),
           },
         },
       },

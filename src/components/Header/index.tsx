@@ -7,7 +7,7 @@ const Header: React.FC = (): React.ReactElement => {
   return (
     <AppBar sx={{ pt: 10, pb: 1, background: "none" }} position="relative">
       <Container maxWidth="sm">
-        <Toolbar sx={{ mb: 2 }}>
+        <Toolbar sx={{ mb: 2, flexWrap: "wrap" }}>
           <Typography component="h5" variant="h5">
             {t("setting")}
           </Typography>

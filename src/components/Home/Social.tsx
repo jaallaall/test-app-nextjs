@@ -1,29 +1,51 @@
 import { AskDialog, Link } from "@mui";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import { Box, Button, Paper, Typography } from "@mui/material";
+import { Options } from "interfaces";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
-import AddSocial from "./AddSocial";
+import { useQueryClient } from "react-query";
+import { useDeleteSocials } from "services";
+import AddSocial, { icons } from "./AddSocial";
 
 interface Props {
-  handleClickEdit: () => void;
+  handleClickEdit?: () => void;
+  data: Options;
+  clearSearch: () => void;
 }
 
-const Social: React.FC = (): React.ReactElement => {
+const Social: React.FC<Props> = ({ data, clearSearch }): React.ReactElement => {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useDeleteSocials();
   const [open, setOpen] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(false);
+  const [arrId, setArrId] = useState<number[]>([]);
+  const [idEddit, setIdEddit] = useState<number | string>();
 
-  const handleClickEdit = () => {
+  const handleClickEdit = (id: number) => {
+    setIdEddit(id);
     setOpen(true);
   };
 
-  const handleClickDelete = () => {
+  const handleClickDelete = (id: number) => {
+    const arr = [];
+    arr.push(id);
     setShow(true);
+    setArrId(arr);
   };
 
+  const handleClickRemove = (id: number) => {
+    mutate(id, {
+      onSuccess: () => {
+        setShow(false);
+        clearSearch();
+        queryClient.fetchInfiniteQuery("socials");
+      },
+    });
+  };
+  const Icon = (icons as any)[data.type.icon];
   return (
     <>
       <Paper sx={{ mt: 2 }}>
@@ -31,11 +53,17 @@ const Social: React.FC = (): React.ReactElement => {
           display="flex"
           justifyContent="space-between"
           alignItems="center"
+          flexWrap="wrap"
           sx={{ ...(open && { mb: 2 }) }}
         >
-          <Typography component="span" display="flex" alignItems="center">
-            <FacebookIcon sx={{ mr: 1 }} />
-            {t("facebook")}
+          <Typography
+            component="span"
+            display="flex"
+            alignItems="center"
+            flexWrap="wrap"
+          >
+            <Icon sx={{ mr: 1 }} />
+            {t(data?.type.value)}
             <Typography
               component="small"
               fontSize="small"
@@ -44,23 +72,24 @@ const Social: React.FC = (): React.ReactElement => {
               {t("link")} :
             </Typography>
             <Link
-              href={"/"}
+              href={data.link}
               sx={{
                 color: "secondary.main",
                 textDecoration: "underline",
+                wordBreak: "break-all",
                 "&:hover": {
                   color: "secondary.dark",
                 },
               }}
             >
-              {"link"}
+              {data.link}
             </Link>
           </Typography>
           <Box>
             <Button
               startIcon={<EditIcon />}
               color="secondary"
-              onClick={handleClickEdit}
+              onClick={() => handleClickEdit(data.id)}
               disabled={open}
             >
               {t("edit")}
@@ -68,7 +97,7 @@ const Social: React.FC = (): React.ReactElement => {
             <Button
               startIcon={<DeleteIcon />}
               color="warning"
-              onClick={handleClickDelete}
+              onClick={() => handleClickDelete(data.id)}
             >
               {t("delete")}
             </Button>
@@ -77,15 +106,20 @@ const Social: React.FC = (): React.ReactElement => {
         <AddSocial
           open={open}
           setOpen={() => setOpen(false)}
-          title={t("editAddPath")}
-          btnTitle={t("editAddPath")}
+          title={t("editAddPath") + " " + t(data?.type.value)}
+          btnTitle={t("editAddPath") + " " + t(data?.type.value)}
+          item={data}
+          idEddit={idEddit}
         />
       </Paper>
-      <AskDialog
-        open={show}
-        handleClickOpen={handleClickDelete}
-        handleCloseModal={() => setShow(false)}
-      />
+      {arrId.includes(data.id) && (
+        <AskDialog
+          open={show}
+          handleClickOpen={() => handleClickRemove(data.id)}
+          handleCloseModal={() => setShow(false)}
+          isLoading={isLoading}
+        />
+      )}
     </>
   );
 };
