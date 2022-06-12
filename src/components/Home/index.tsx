@@ -72,7 +72,7 @@ const Home: React.FC = (): React.ReactElement => {
   const dataResult = result.length > 0 ? result : res;
 
   const elm =
-    !dataResult.length && !open ? (
+    !dataResult?.length && !open ? (
       <Box
         sx={{
           display: "flex",

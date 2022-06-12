@@ -77,10 +77,12 @@ const Social: React.FC<Props> = ({ data, clearSearch }): React.ReactElement => {
                 color: "secondary.main",
                 textDecoration: "underline",
                 wordBreak: "break-all",
+                fontFamily: "Roboto,Helvetica,Arial,sans-serif",
                 "&:hover": {
                   color: "secondary.dark",
                 },
               }}
+              target="_blank"
             >
               {data.link}
             </Link>

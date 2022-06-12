@@ -200,6 +200,7 @@ const AddSocial: React.FC<Props> = ({
               sx={{
                 "& .MuiOutlinedInput-root": {
                   direction: "rtl",
+                  fontFamily: "Roboto,Helvetica,Arial,sans-serif",
                 },
               }}
             />
