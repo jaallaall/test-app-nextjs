@@ -4,7 +4,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
   Button,
-  CircularProgress,
   Container,
   IconButton,
   Paper,
