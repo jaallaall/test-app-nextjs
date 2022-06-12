@@ -33,10 +33,9 @@ function MyApp(props: AppPropsWithLayout) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    // <CacheProvider value={emotionCache}>
     <ColorModeProvider>
       <Head>
-        <title>{"ecomerce"}</title>
+        <title>{"test"}</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
 
@@ -47,7 +46,6 @@ function MyApp(props: AppPropsWithLayout) {
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </ColorModeProvider>
-    // </CacheProvider>
   );
 }
 

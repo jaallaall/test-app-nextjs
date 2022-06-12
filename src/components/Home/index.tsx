@@ -19,6 +19,7 @@ import AddSocial from "./AddSocial";
 import Search from "./Search";
 import Social from "./Social";
 import AddRoadIcon from "@mui/icons-material/AddRoad";
+import Header from "components/Header";
 
 const bread = [
   { id: 1, title: "home", href: RouteKey.Home },
@@ -28,7 +29,7 @@ const bread = [
 
 const Home: React.FC = (): React.ReactElement => {
   const { t } = useTranslation();
-  const { data, isLoading } = useSocials();
+  const { data } = useSocials();
   const res = data?.sort((a: any, b: any) => b.id - a.id);
   const [open, setOpen] = useState<boolean>(false);
   const [openSnack, setOpenSnack] = useState<boolean>(false);
@@ -91,11 +92,12 @@ const Home: React.FC = (): React.ReactElement => {
 
   return (
     <>
+      <Header />
       <Stack component="section" sx={{ pb: 4 }}>
         <Container maxWidth="sm">
           <Breadcrumbs breadcrumbs={bread} />
 
-          <Paper elevation={0} sx={{ mt: 5 }}>
+          <Paper elevation={0} sx={{ mt: { md: 5 } }}>
             <Typography component="h6" variant="h6" color="inherit" mb={2}>
               {t("path")}
             </Typography>

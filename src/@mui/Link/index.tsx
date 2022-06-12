@@ -3,11 +3,11 @@ import NextLink, { LinkProps as NextLinkProps } from "next/link";
 import { forwardRef } from "react";
 
 export type LinkProps = Omit<LinkMUIProps, "href" | "classes"> &
-  Pick<NextLinkProps, "href" | "as" | "prefetch">;
+  Pick<NextLinkProps, "href" | "as" | "prefetch" | "locale">;
 
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
-  ({ href, as, prefetch, sx, ...props }, ref) => (
-    <NextLink href={href} as={as} prefetch={prefetch} passHref>
+  ({ href, as, prefetch, locale, sx, ...props }, ref) => (
+    <NextLink href={href} as={as} prefetch={prefetch} passHref locale={locale}>
       <LinkMUI
         ref={ref}
         {...props}
