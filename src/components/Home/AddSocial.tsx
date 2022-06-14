@@ -51,7 +51,7 @@ const options = [
   { id: 3, value: "facebook", faValue: "فیس بوک", icon: "FacebookIcon" },
   { id: 4, value: "telegram", faValue: "تلگرام", icon: "TelegramIcon" },
   { id: 5, value: "linkedIn", faValue: "لینکدین", icon: "LinkedInIcon" },
-  { id: 6, value: "website", faValue: "website", icon: "LanguageIcon" },
+  { id: 6, value: "website", faValue: "وبسایت", icon: "LanguageIcon" },
 ];
 
 const AddSocial: React.FC<Props> = ({

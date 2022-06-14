@@ -1,14 +1,3 @@
 {
-  "socials": [
-    {
-      "type": {
-        "id": 5,
-        "value": "linkedIn",
-        "faValue": "لینکدین",
-        "icon": "LinkedInIcon"
-      },
-      "link": "https://www.google.com/search",
-      "id": 82
-    }
-  ]
+  "socials": []
 }

@@ -71,16 +71,16 @@ export const ColorModeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const theme = useMemo(
     () => customTheme(getDesignTokens(cookie.theme?.mode), cookie.theme?.dir),
-    [cookie.theme]
+    [cookie.theme?.mode, cookie.theme?.dir]
   );
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <DirectionModeContext.Provider value={directionMode}>
+    <DirectionModeContext.Provider value={directionMode}>
+      <ColorModeContext.Provider value={colorMode}>
         <CacheProviderRtl direction={dir}>
           <ThemeProvider theme={theme}>{children}</ThemeProvider>
         </CacheProviderRtl>
-      </DirectionModeContext.Provider>
-    </ColorModeContext.Provider>
+      </ColorModeContext.Provider>
+    </DirectionModeContext.Provider>
   );
 };

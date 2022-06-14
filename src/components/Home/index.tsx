@@ -92,7 +92,7 @@ const Home: React.FC = (): React.ReactElement => {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <Stack component="section" sx={{ pb: 4 }}>
         <Container maxWidth="sm">
           <Breadcrumbs breadcrumbs={bread} />

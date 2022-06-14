@@ -38,9 +38,8 @@ function MyApp(props: AppPropsWithLayout) {
         <title>{"test"}</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-
+      <NextNProgress height={5} color={"rgb(255, 168, 46)"} />
       <QueryClientProvider client={queryClient}>
-        <NextNProgress height={5} color={"rgb(255, 168, 46)"} />
         <CssBaseline />
         {getLayout(<Component {...pageProps} />)}
         <ReactQueryDevtools initialIsOpen={false} />
