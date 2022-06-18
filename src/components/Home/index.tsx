@@ -1,5 +1,6 @@
 import { Breadcrumbs } from "@mui";
 import AddIcon from "@mui/icons-material/Add";
+import AddRoadIcon from "@mui/icons-material/AddRoad";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
@@ -18,8 +19,6 @@ import { useSocials } from "services";
 import AddSocial from "./AddSocial";
 import Search from "./Search";
 import Social from "./Social";
-import AddRoadIcon from "@mui/icons-material/AddRoad";
-import Header from "components/Header";
 
 const bread = [
   { id: 1, title: "home", href: RouteKey.Home },
@@ -29,7 +28,7 @@ const bread = [
 
 const Home: React.FC = (): React.ReactElement => {
   const { t } = useTranslation();
-  const { data } = useSocials();
+  const { data, isLoading } = useSocials();
   const res = data?.sort((a: any, b: any) => b.id - a.id);
   const [open, setOpen] = useState<boolean>(false);
   const [openSnack, setOpenSnack] = useState<boolean>(false);
@@ -71,6 +70,8 @@ const Home: React.FC = (): React.ReactElement => {
   };
 
   const dataResult = result.length > 0 ? result : res;
+
+  console.log(openSnack);
 
   const elm =
     !dataResult?.length && !open ? (

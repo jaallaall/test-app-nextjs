@@ -1,17 +1,18 @@
-import { createTheme } from "@mui/material/styles";
-import { defaultStyles, fontFamily } from "./styles";
-import { faIR, enUS } from "@mui/material/locale";
 import { PaletteOptions } from "@mui/material";
+import { enUS, faIR } from "@mui/material/locale";
+import { createTheme } from "@mui/material/styles";
+import { fontFamily } from "./styles";
 
-export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
-  const locale = dir === "rtl" ? faIR : enUS;
+export const customTheme = (palette?: PaletteOptions, locale?: string) => {
+  const loc = locale === "fa" ? faIR : enUS;
+  const dir = locale === "fa" ? "ltr" : "ltr";
   return createTheme(
     {
-      // direction: dir,
+      direction: dir,
       typography: {
         htmlFontSize: 16,
         fontSize: 14,
-        ...(dir === "rtl" && {
+        ...(locale === "fa" && {
           fontFamily: "dana",
         }),
       },
@@ -19,7 +20,6 @@ export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
         MuiCssBaseline: {
           styleOverrides: {
             fontFamily,
-            defaultStyles,
             body: {
               display: "flex",
               flexDirection: "column",
@@ -32,6 +32,14 @@ export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
               display: "inherit",
               flexDirection: "inherit",
               minHeight: "inherit",
+            },
+            ".en": {
+              fontFamily:
+                ["Roboto", "Helvetica", "Arial", "sans-serif"].join(",") +
+                "!important",
+            },
+            ".ltr": {
+              direction: locale === "fa" ? "rtl !important" : "ltr !important",
             },
           },
         },
@@ -82,7 +90,7 @@ export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
               backgroundColor: theme.palette.primary.light,
               color: "inherit",
               padding: 24,
-              ...(palette?.mode === "light" && {
+              ...(locale === "fa" && {
                 boxShadow:
                   "rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px",
               }),
@@ -106,7 +114,6 @@ export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
             root: ({ theme }) => ({
               borderRadius: 6,
               color: theme.palette.text.secondary,
-              direction: dir === "rtl" ? "ltr" : "ltr",
               "& .MuiSvgIcon-root": {
                 color: "inherit",
               },
@@ -130,7 +137,6 @@ export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
               direction: "inherit",
             },
             root: ({ theme }) => ({
-              direction: dir,
               "&.MuiInputBase-colorPrimary:not(.Mui-error)": {
                 "&:hover .MuiOutlinedInput-notchedOutline": {
                   borderColor: theme.palette.primary.main,
@@ -182,7 +188,6 @@ export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
         MuiDialog: {
           styleOverrides: {
             paper: ({ theme }) => ({
-              direction: dir === "rtl" ? "ltr" : "ltr",
               width: "100%",
               overflowY: "inherit",
               margin: 16,
@@ -217,6 +222,6 @@ export const customTheme = (palette?: PaletteOptions, dir?: "rtl" | "ltr") => {
       },
       palette,
     },
-    locale
+    loc
   );
 };

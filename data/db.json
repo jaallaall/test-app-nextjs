@@ -1,3 +1,24 @@
 {
-  "socials": []
+  "socials": [
+    {
+      "type": {
+        "id": 6,
+        "value": "website",
+        "faValue": "وبسایت",
+        "icon": "LanguageIcon"
+      },
+      "link": "https://fontawesome.com/start",
+      "id": 78
+    },
+    {
+      "type": {
+        "id": 5,
+        "value": "linkedIn",
+        "faValue": "لینکدین",
+        "icon": "LinkedInIcon"
+      },
+      "link": "https://fontawesome.com/start",
+      "id": 43
+    }
+  ]
 }

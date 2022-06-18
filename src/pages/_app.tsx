@@ -1,5 +1,4 @@
-import { EmotionCache } from "@emotion/react";
-import { cacheRtl } from "@mui";
+import { CacheProvider, EmotionCache } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ColorModeProvider } from "context";
 import type { NextPage } from "next";
@@ -7,10 +6,16 @@ import { appWithTranslation } from "next-i18next";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import NextNProgress from "nextjs-progressbar";
-import type { ReactElement, ReactNode } from "react";
-import { useState } from "react";
+import {
+  ReactElement,
+  ReactNode,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
+import { cacheRtl } from "theme/cacheRtl";
 
 const clientSideEmotionCache = cacheRtl();
 
@@ -27,24 +32,45 @@ type AppPropsWithLayout = MyAppProps & {
 };
 
 function MyApp(props: AppPropsWithLayout) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const {
+    Component,
+    emotionCache = clientSideEmotionCache,
+    pageProps,
+    router,
+  } = props;
   const getLayout = Component.getLayout || ((page: React.ReactNode) => page);
 
   const [queryClient] = useState(() => new QueryClient());
 
+  const memoizedEmotionCache = useMemo(() => {
+    if (router.locale === "fa") {
+      return cacheRtl(true);
+    }
+    if (router.locale === "en") {
+      return cacheRtl(false);
+    }
+    return emotionCache;
+  }, [router.locale]);
+
+  useLayoutEffect(() => {
+    document.dir = router.locale === "fa" ? "rtl" : "ltr";
+  }, [router.locale]);
+
   return (
-    <ColorModeProvider>
-      <Head>
-        <title>{"test"}</title>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <NextNProgress height={5} color={"rgb(255, 168, 46)"} />
-      <QueryClientProvider client={queryClient}>
-        <CssBaseline />
-        {getLayout(<Component {...pageProps} />)}
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </ColorModeProvider>
+    <CacheProvider value={memoizedEmotionCache}>
+      <ColorModeProvider locale={router.locale}>
+        <Head>
+          <title>{"test"}</title>
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
+        <NextNProgress height={5} color={"rgb(255, 168, 46)"} />
+        <QueryClientProvider client={queryClient}>
+          <CssBaseline />
+          {getLayout(<Component {...pageProps} />)}
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </ColorModeProvider>
+    </CacheProvider>
   );
 }
 

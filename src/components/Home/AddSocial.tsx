@@ -25,15 +25,18 @@ import { useQueryClient } from "react-query";
 import { useAddSocials, useUpdateSocials } from "services";
 import { validationSchema } from "utils";
 
+const toFindDuplicates = (arry: any[]) =>
+  arry.filter((item, index) => arry.indexOf(item) !== index);
+
 interface Props {
   open: boolean;
   setOpen: () => void;
   title?: string;
   btnTitle?: string;
   item?: Options;
-  data?: Options[];
+  data: Options[];
   idEddit?: number | string;
-  setOpenSnack?: (e: any) => void;
+  setOpenSnack: (e: any) => void;
 }
 
 export const icons = {
@@ -67,8 +70,15 @@ const AddSocial: React.FC<Props> = ({
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { direction } = useTheme();
+  // const { data: dat } = useSocials();
   const { mutate, isLoading } = useAddSocials();
   const { mutate: mutateUpdate, isLoading: loading } = useUpdateSocials();
+
+  // const [resData, setResData] = useState<Options[]>([]);
+
+  // useEffect(() => {
+  //   if (data) setResData(data);
+  // }, [data]);
 
   const {
     values,
@@ -88,11 +98,14 @@ const AddSocial: React.FC<Props> = ({
     },
     validationSchema: validationSchema,
     onSubmit: (values, { resetForm }) => {
+      // console.log(values.type);
+
       const isDuplicate = data?.some((itm) => {
         return JSON.stringify(itm.type) === JSON.stringify(values.type);
       });
+      console.log(isDuplicate);
       if (isDuplicate) {
-        if (setOpenSnack) setOpenSnack(true);
+        setOpenSnack(true);
       } else {
         if (idEddit) {
           mutateUpdate(
@@ -125,6 +138,12 @@ const AddSocial: React.FC<Props> = ({
     setOpen();
     resetForm();
   };
+
+  console.log(data);
+  // const isDuplicate = dat?.some((itm) => {
+  //   console.log(itm.type);
+  //   return JSON.stringify(itm.type) === JSON.stringify(values.type);
+  // });
 
   return (
     <Collapse
@@ -197,11 +216,8 @@ const AddSocial: React.FC<Props> = ({
               onChange={handleChange}
               value={values.link}
               color="secondary"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  direction: "rtl",
-                  fontFamily: "Roboto,Helvetica,Arial,sans-serif",
-                },
+              InputProps={{
+                className: "en ltr",
               }}
             />
             {Boolean(errors.link) && (

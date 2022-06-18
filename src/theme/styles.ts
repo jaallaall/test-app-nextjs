@@ -36,19 +36,3 @@ export const fontFamily = `
 		font-display: swap;
 	}
 `;
-
-export const defaultStyles = `
-	.scrollHorizental::-webkit-scrollbar {
-		height: 10px;
-		display:none
-	}
-	.scrollHorizental::-webkit-scrollbar:hover{
-		display:block
-	}
-	.mapboxgl-ctrl-bottom-right,.mapboxgl-ctrl-bottom-left{
-		display:none
-	}
-	.MuiCalendarPicker-root{
-		direction:rtl
-	}
-`;
