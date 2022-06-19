@@ -34,7 +34,7 @@ yarn dev-serv
 
 #### Implement forms with Formik & yup
 
-#### Eslint & Prettier & Docker
+#### Implement next-i18next for language and Mode color
 
 ## Notes
 
@@ -43,3 +43,4 @@ The purpose of doing this prototype is to influence the process of assessing my 
 
 نمونه اولیه پروژه تستی برای بررسی کد، چارچوب و معماری پروژه
 هدف از انجام این نمونه اولیه تأثیرگذاری بر روند ارزیابی توانایی های من است
+پس از ران کردن سرور پروژه را تست بفرمایید
