@@ -28,7 +28,7 @@ const bread = [
 
 const Home: React.FC = (): React.ReactElement => {
   const { t } = useTranslation();
-  const { data, isLoading } = useSocials();
+  const { data } = useSocials();
   const res = data?.sort((a: any, b: any) => b.id - a.id);
   const [open, setOpen] = useState<boolean>(false);
   const [openSnack, setOpenSnack] = useState<boolean>(false);
@@ -71,8 +71,6 @@ const Home: React.FC = (): React.ReactElement => {
 
   const dataResult = result.length > 0 ? result : res;
 
-  console.log(openSnack);
-
   const elm =
     !dataResult?.length && !open ? (
       <Box
@@ -87,13 +85,20 @@ const Home: React.FC = (): React.ReactElement => {
       </Box>
     ) : (
       dataResult?.map((item: Options) => {
-        return <Social key={item.id} item={item} clearSearch={clearSearch} />;
+        return (
+          <Social
+            key={item.id}
+            item={item}
+            clearSearch={clearSearch}
+            setOpenSnack={setOpenSnack}
+            data={dataResult}
+          />
+        );
       })
     );
 
   return (
     <>
-      {/* <Header /> */}
       <Stack component="section" sx={{ pb: 4 }}>
         <Container maxWidth="sm">
           <Breadcrumbs breadcrumbs={bread} />

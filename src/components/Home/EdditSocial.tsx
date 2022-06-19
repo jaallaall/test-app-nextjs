@@ -2,32 +2,34 @@ import { useFormik } from "formik";
 import { Options } from "interfaces";
 import { useTranslation } from "next-i18next";
 import { useQueryClient } from "react-query";
-import { useAddSocials } from "services";
+import { useUpdateSocials } from "services";
 import { isDuplicate, validationSchema } from "utils";
 import Form from "./Form";
 
 interface Props {
   open: boolean;
   setOpen: () => void;
-  data?: Options[];
+  item?: Options;
   setOpenSnack: (e: any) => void;
+  data?: Options[];
 }
 
-const AddSocial: React.FC<Props> = ({
+const EdditSocial: React.FC<Props> = ({
   open,
   setOpen,
-  data,
+  item,
   setOpenSnack,
+  data,
 }): React.ReactElement => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
-
-  const { mutate, isLoading } = useAddSocials();
+  const { mutate, isLoading } = useUpdateSocials();
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      type: "",
-      link: "",
+      type: item?.type,
+      link: item?.link,
     },
     validationSchema: validationSchema,
     onSubmit: (values, { resetForm }) => {
@@ -35,7 +37,7 @@ const AddSocial: React.FC<Props> = ({
         setOpenSnack(true);
       } else {
         mutate(
-          { ...values, type: values.type },
+          { ...values, type: values.type, id: item?.id },
           {
             onSuccess: () => {
               resetForm();
@@ -51,8 +53,8 @@ const AddSocial: React.FC<Props> = ({
   return (
     <Form
       isLoading={isLoading}
-      title={t("addPath")}
-      btnTitle={t("registerAddPath")}
+      title={t("editAddPath") + " " + t(item?.type.value)}
+      btnTitle={t("editAddPath") + " " + t(item?.type.value)}
       formik={formik}
       open={open}
       setOpen={setOpen}
@@ -60,4 +62,4 @@ const AddSocial: React.FC<Props> = ({
   );
 };
 
-export default AddSocial;
+export default EdditSocial;

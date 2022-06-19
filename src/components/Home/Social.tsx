@@ -7,27 +7,29 @@ import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useDeleteSocials } from "services";
-import AddSocial, { icons } from "./AddSocial";
+import EdditSocial from "./EdditSocial";
+import { icons } from "./Form";
 
 interface Props {
   handleClickEdit?: () => void;
   item: Options;
   clearSearch: () => void;
+  setOpenSnack: (e: any) => void;
+  data?: Options[];
 }
 
-const Social: React.FC<Props> = ({ item, clearSearch }): React.ReactElement => {
+const Social: React.FC<Props> = ({
+  item,
+  clearSearch,
+  setOpenSnack,
+  data,
+}): React.ReactElement => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useDeleteSocials();
   const [open, setOpen] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(false);
   const [arrId, setArrId] = useState<number[]>([]);
-  const [idEddit, setIdEddit] = useState<number | string>();
-
-  const handleClickEdit = (id: number) => {
-    setIdEddit(id);
-    setOpen(true);
-  };
 
   const handleClickDelete = (id: number) => {
     const arr = [];
@@ -91,7 +93,7 @@ const Social: React.FC<Props> = ({ item, clearSearch }): React.ReactElement => {
             <Button
               startIcon={<EditIcon />}
               color="secondary"
-              onClick={() => handleClickEdit(item.id)}
+              onClick={() => setOpen(true)}
               disabled={open}
             >
               {t("edit")}
@@ -105,15 +107,13 @@ const Social: React.FC<Props> = ({ item, clearSearch }): React.ReactElement => {
             </Button>
           </Box>
         </Box>
-        {/* <AddSocial
+        <EdditSocial
           open={open}
           setOpen={() => setOpen(false)}
-          title={t("editAddPath") + " " + t(item?.type.value)}
-          btnTitle={t("editAddPath") + " " + t(item?.type.value)}
           item={item}
-          idEddit={idEddit}
-        /> */}
-        {/* {cloneElement(children,)} */}
+          setOpenSnack={setOpenSnack}
+          data={data}
+        />
       </Paper>
       {arrId.includes(item.id) && (
         <AskDialog
