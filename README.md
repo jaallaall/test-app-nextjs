@@ -1,34 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## TypeScript Next.js example prototype project
+
+This is a project that shows the usage of Next.js with TypeScript.
+
+## How to use it?
+
+Execute [create-next-app](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/v8/commands/npm-init/) or [Yarn](https://classic.yarnpkg.com/en/docs/cli/create/) to bootstrap the example:
 
 ## Getting Started
 
 First, run the development server:
 
 ```bash
+yarn
+ #or
+npm i
+# then
 npm run dev
 # or
 yarn dev
+# then to run the server
+yarn dev-serv
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies used
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+#### Next.js with Typescript & hooks
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+#### Material UI5
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+#### React-query & axios
 
-## Learn More
+#### Context
 
-To learn more about Next.js, take a look at the following resources:
+#### Implement forms with Formik & yup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Eslint & Prettier & Docker
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Notes
 
-## Deploy on Vercel
+Test project prototype to review project code, framework and architecture
+The purpose of doing this prototype is to influence the process of assessing my abilities
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+نمونه اولیه پروژه تستی برای بررسی کد، چارچوب و معماری پروژه
+هدف از انجام این نمونه اولیه تأثیرگذاری بر روند ارزیابی توانایی های من است
