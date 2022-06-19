@@ -2,23 +2,23 @@
   "socials": [
     {
       "type": {
-        "id": 6,
-        "value": "website",
-        "faValue": "وبسایت",
-        "icon": "LanguageIcon"
+        "id": 3,
+        "value": "facebook",
+        "faValue": "فیس بوک",
+        "icon": "FacebookIcon"
       },
       "link": "https://fontawesome.com/start",
-      "id": 78
+      "id": 74
     },
     {
       "type": {
-        "id": 5,
-        "value": "linkedIn",
-        "faValue": "لینکدین",
-        "icon": "LinkedInIcon"
+        "id": 1,
+        "value": "twitter",
+        "faValue": "توییتر",
+        "icon": "TwitterIcon"
       },
       "link": "https://fontawesome.com/start",
-      "id": 43
+      "id": 87
     }
   ]
 }

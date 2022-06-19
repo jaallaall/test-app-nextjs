@@ -11,11 +11,11 @@ import AddSocial, { icons } from "./AddSocial";
 
 interface Props {
   handleClickEdit?: () => void;
-  data: Options;
+  item: Options;
   clearSearch: () => void;
 }
 
-const Social: React.FC<Props> = ({ data, clearSearch }): React.ReactElement => {
+const Social: React.FC<Props> = ({ item, clearSearch }): React.ReactElement => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useDeleteSocials();
@@ -45,7 +45,7 @@ const Social: React.FC<Props> = ({ data, clearSearch }): React.ReactElement => {
       },
     });
   };
-  const Icon = (icons as any)[data.type.icon];
+  const Icon = (icons as any)[item.type.icon];
   return (
     <>
       <Paper sx={{ mt: 2 }}>
@@ -63,7 +63,7 @@ const Social: React.FC<Props> = ({ data, clearSearch }): React.ReactElement => {
             flexWrap="wrap"
           >
             <Icon sx={{ mr: 1 }} />
-            {t(data?.type.value)}
+            {t(item?.type.value)}
             <Typography
               component="small"
               fontSize="small"
@@ -72,7 +72,7 @@ const Social: React.FC<Props> = ({ data, clearSearch }): React.ReactElement => {
               {t("link")} :
             </Typography>
             <Link
-              href={data.link}
+              href={item.link}
               sx={{
                 color: "secondary.main",
                 textDecoration: "underline",
@@ -84,14 +84,14 @@ const Social: React.FC<Props> = ({ data, clearSearch }): React.ReactElement => {
               }}
               target="_blank"
             >
-              {data.link}
+              {item.link}
             </Link>
           </Typography>
           <Box>
             <Button
               startIcon={<EditIcon />}
               color="secondary"
-              onClick={() => handleClickEdit(data.id)}
+              onClick={() => handleClickEdit(item.id)}
               disabled={open}
             >
               {t("edit")}
@@ -99,25 +99,26 @@ const Social: React.FC<Props> = ({ data, clearSearch }): React.ReactElement => {
             <Button
               startIcon={<DeleteIcon />}
               color="warning"
-              onClick={() => handleClickDelete(data.id)}
+              onClick={() => handleClickDelete(item.id)}
             >
               {t("delete")}
             </Button>
           </Box>
         </Box>
-        <AddSocial
+        {/* <AddSocial
           open={open}
           setOpen={() => setOpen(false)}
-          title={t("editAddPath") + " " + t(data?.type.value)}
-          btnTitle={t("editAddPath") + " " + t(data?.type.value)}
-          item={data}
+          title={t("editAddPath") + " " + t(item?.type.value)}
+          btnTitle={t("editAddPath") + " " + t(item?.type.value)}
+          item={item}
           idEddit={idEddit}
-        />
+        /> */}
+        {/* {cloneElement(children,)} */}
       </Paper>
-      {arrId.includes(data.id) && (
+      {arrId.includes(item.id) && (
         <AskDialog
           open={show}
-          handleClickOpen={() => handleClickRemove(data.id)}
+          handleClickOpen={() => handleClickRemove(item.id)}
           handleCloseModal={() => setShow(false)}
           isLoading={isLoading}
         />

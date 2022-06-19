@@ -17,7 +17,7 @@ export const ColorModeContext = createContext({
 export const ColorModeProvider: React.FC<{
   locale?: string;
   children: React.ReactNode;
-}> = ({ locale = "fa", children }): React.ReactElement => {
+}> = ({ locale, children }): React.ReactElement => {
   const [mode, setMode] = useState<"light" | "dark">("dark");
   const [cookie, setCookie] = useCookies(["theme"]);
 

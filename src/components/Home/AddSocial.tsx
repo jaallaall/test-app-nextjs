@@ -22,7 +22,7 @@ import { useFormik } from "formik";
 import { Options } from "interfaces";
 import { useTranslation } from "next-i18next";
 import { useQueryClient } from "react-query";
-import { useAddSocials, useUpdateSocials } from "services";
+import { useAddSocials, useSocials, useUpdateSocials } from "services";
 import { validationSchema } from "utils";
 
 const toFindDuplicates = (arry: any[]) =>
@@ -34,9 +34,9 @@ interface Props {
   title?: string;
   btnTitle?: string;
   item?: Options;
-  data: Options[];
+  data?: Options[];
   idEddit?: number | string;
-  setOpenSnack: (e: any) => void;
+  setOpenSnack?: (e: any) => void;
 }
 
 export const icons = {
@@ -64,21 +64,14 @@ const AddSocial: React.FC<Props> = ({
   btnTitle,
   item,
   data,
-  idEddit,
+  // idEddit,
   setOpenSnack,
 }): React.ReactElement => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { direction } = useTheme();
-  // const { data: dat } = useSocials();
   const { mutate, isLoading } = useAddSocials();
   const { mutate: mutateUpdate, isLoading: loading } = useUpdateSocials();
-
-  // const [resData, setResData] = useState<Options[]>([]);
-
-  // useEffect(() => {
-  //   if (data) setResData(data);
-  // }, [data]);
 
   const {
     values,
@@ -100,20 +93,21 @@ const AddSocial: React.FC<Props> = ({
     onSubmit: (values, { resetForm }) => {
       // console.log(values.type);
 
-      const isDuplicate = data?.some((itm) => {
+      const isDuplicate = data?.some((itm: Options) => {
         return JSON.stringify(itm.type) === JSON.stringify(values.type);
       });
       console.log(isDuplicate);
       if (isDuplicate) {
         setOpenSnack(true);
       } else {
-        if (idEddit) {
+        if (item?.id) {
           mutateUpdate(
-            { ...values, type: values.type, id: idEddit },
+            { ...values, type: values.type, id: item?.id },
             {
               onSuccess: () => {
                 resetForm();
                 setOpen();
+                // setOpenSnack(false);
                 queryClient.fetchInfiniteQuery("socials");
               },
             }
@@ -125,6 +119,7 @@ const AddSocial: React.FC<Props> = ({
               onSuccess: () => {
                 resetForm();
                 setOpen();
+                // setOpenSnack(false);
                 queryClient.fetchInfiniteQuery("socials");
               },
             }
@@ -134,16 +129,12 @@ const AddSocial: React.FC<Props> = ({
     },
   });
 
+  // console.log(data);
+
   const handleClickCancle = () => {
     setOpen();
     resetForm();
   };
-
-  console.log(data);
-  // const isDuplicate = dat?.some((itm) => {
-  //   console.log(itm.type);
-  //   return JSON.stringify(itm.type) === JSON.stringify(values.type);
-  // });
 
   return (
     <Collapse

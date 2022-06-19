@@ -87,7 +87,7 @@ const Home: React.FC = (): React.ReactElement => {
       </Box>
     ) : (
       dataResult?.map((item: Options) => {
-        return <Social key={item.id} data={item} clearSearch={clearSearch} />;
+        return <Social key={item.id} item={item} clearSearch={clearSearch} />;
       })
     );
 

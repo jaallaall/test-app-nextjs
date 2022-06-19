@@ -5,13 +5,11 @@ import { Box, Button } from "@mui/material";
 import { useColorMode } from "hooks";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { useCookies } from "react-cookie";
 
 const Mode: React.FC = (): React.ReactElement => {
   const { t } = useTranslation();
   const { locale, asPath } = useRouter();
-  const [cookie] = useCookies(["theme"]);
-  const { toggleColorMode } = useColorMode();
+  const { mode, toggleColorMode } = useColorMode();
 
   return (
     <Box>
@@ -49,11 +47,7 @@ const Mode: React.FC = (): React.ReactElement => {
         sx={{ color: "text.secondary" }}
         onClick={toggleColorMode}
       >
-        {cookie?.theme && cookie?.theme?.mode !== "dark" ? (
-          <WbSunnyIcon />
-        ) : (
-          <DarkModeIcon />
-        )}
+        {mode !== "dark" ? <WbSunnyIcon /> : <DarkModeIcon />}
       </Button>
     </Box>
   );
