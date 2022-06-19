@@ -2,10 +2,10 @@
   "socials": [
     {
       "type": {
-        "id": 1,
-        "value": "twitter",
-        "faValue": "توییتر",
-        "icon": "TwitterIcon"
+        "id": 6,
+        "value": "website",
+        "faValue": "وبسایت",
+        "icon": "LanguageIcon"
       },
       "link": "https://fontawesome.com/start",
       "id": 92

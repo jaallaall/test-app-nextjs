@@ -36,6 +36,8 @@ yarn dev-serv
 
 #### Implement next-i18next for language and Mode color
 
+#### Docker & Eslint & huskey
+
 ## Notes
 
 Test project prototype to review project code, framework and architecture
