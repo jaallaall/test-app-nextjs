@@ -1,6 +1,11 @@
 {
   "name": "test-app-next",
   "version": "0.1.0",
+  "author": {
+    "name": "Jalal Khaleghi",
+    "email": "jalal.khaleqi22@gmail.com",
+    "tell": "09390157719"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",
