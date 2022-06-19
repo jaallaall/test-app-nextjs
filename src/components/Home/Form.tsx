@@ -1,9 +1,3 @@
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import LanguageIcon from "@mui/icons-material/Language";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import TelegramIcon from "@mui/icons-material/Telegram";
-import TwitterIcon from "@mui/icons-material/Twitter";
 import { LoadingButton } from "@mui/lab";
 import {
   Autocomplete,
@@ -20,6 +14,7 @@ import {
 import { FormikValues } from "formik";
 import { Options } from "interfaces";
 import { useTranslation } from "next-i18next";
+import { icons, options } from "./data";
 
 interface Props {
   isLoading: boolean;
@@ -32,24 +27,6 @@ interface Props {
   handleClickCancle?: (e: any) => void;
   formik: FormikValues;
 }
-
-export const icons = {
-  TwitterIcon,
-  InstagramIcon,
-  FacebookIcon,
-  TelegramIcon,
-  LinkedInIcon,
-  LanguageIcon,
-};
-
-const options = [
-  { id: 1, value: "twitter", faValue: "توییتر", icon: "TwitterIcon" },
-  { id: 2, value: "instagram", faValue: "اینستاگرام", icon: "InstagramIcon" },
-  { id: 3, value: "facebook", faValue: "فیس بوک", icon: "FacebookIcon" },
-  { id: 4, value: "telegram", faValue: "تلگرام", icon: "TelegramIcon" },
-  { id: 5, value: "linkedIn", faValue: "لینکدین", icon: "LinkedInIcon" },
-  { id: 6, value: "website", faValue: "وبسایت", icon: "LanguageIcon" },
-];
 
 const Form: React.FC<Props> = ({
   isLoading,

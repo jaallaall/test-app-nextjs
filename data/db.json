@@ -8,27 +8,17 @@
         "icon": "TwitterIcon"
       },
       "link": "https://fontawesome.com/start",
-      "id": 26
+      "id": 92
     },
     {
       "type": {
-        "id": 3,
-        "value": "facebook",
-        "faValue": "فیس بوک",
-        "icon": "FacebookIcon"
+        "id": 2,
+        "value": "instagram",
+        "faValue": "اینستاگرام",
+        "icon": "InstagramIcon"
       },
       "link": "https://fontawesome.com/start",
-      "id": 36
-    },
-    {
-      "type": {
-        "id": 4,
-        "value": "telegram",
-        "faValue": "تلگرام",
-        "icon": "TelegramIcon"
-      },
-      "link": "https://fontawesome.com/start",
-      "id": 96
+      "id": 45
     }
   ]
 }

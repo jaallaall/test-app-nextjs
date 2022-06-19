@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useDeleteSocials } from "services";
 import EdditSocial from "./EdditSocial";
-import { icons } from "./Form";
+import { icons } from "./data";
 
 interface Props {
   handleClickEdit?: () => void;
@@ -24,6 +24,7 @@ const Social: React.FC<Props> = ({
   setOpenSnack,
   data,
 }): React.ReactElement => {
+  const Icon = (icons as any)[item.type.icon];
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useDeleteSocials();
@@ -47,7 +48,7 @@ const Social: React.FC<Props> = ({
       },
     });
   };
-  const Icon = (icons as any)[item.type.icon];
+
   return (
     <>
       <Paper sx={{ mt: 2 }}>

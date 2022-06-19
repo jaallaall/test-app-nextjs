@@ -12,19 +12,14 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Options, RouteKey } from "interfaces";
+import { Options } from "interfaces";
 import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { useSocials } from "services";
 import AddSocial from "./AddSocial";
+import { breadcrumbs } from "./data";
 import Search from "./Search";
 import Social from "./Social";
-
-const bread = [
-  { id: 1, title: "home", href: RouteKey.Home },
-  { id: 1, title: "setting", href: RouteKey.Setting },
-  { id: 1, title: "user", href: RouteKey.User },
-];
 
 const Home: React.FC = (): React.ReactElement => {
   const { t } = useTranslation();
@@ -101,7 +96,7 @@ const Home: React.FC = (): React.ReactElement => {
     <>
       <Stack component="section" sx={{ pb: 4 }}>
         <Container maxWidth="sm">
-          <Breadcrumbs breadcrumbs={bread} />
+          <Breadcrumbs breadcrumbs={breadcrumbs} />
 
           <Paper elevation={0} sx={{ mt: { md: 5 } }}>
             <Typography component="h6" variant="h6" color="inherit" mb={2}>
