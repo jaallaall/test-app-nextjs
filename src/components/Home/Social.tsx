@@ -7,8 +7,8 @@ import { useTranslation } from "next-i18next";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useDeleteSocials } from "services";
-import EdditSocial from "./EdditSocial";
 import { icons } from "./data";
+import EdditSocial from "./EdditSocial";
 
 interface Props {
   handleClickEdit?: () => void;
@@ -24,7 +24,7 @@ const Social: React.FC<Props> = ({
   setOpenSnack,
   data,
 }): React.ReactElement => {
-  const Icon = (icons as any)[item.type.icon];
+  const Icon = icons[item?.type?.icon as keyof typeof icons];
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useDeleteSocials();
@@ -75,19 +75,19 @@ const Social: React.FC<Props> = ({
               {t("link")} :
             </Typography>
             <Link
-              href={item.link}
+              href={item?.link}
               sx={{
                 color: "secondary.main",
                 textDecoration: "underline",
                 wordBreak: "break-all",
-                fontFamily: "Roboto,Helvetica,Arial,sans-serif",
                 "&:hover": {
                   color: "secondary.dark",
                 },
               }}
               target="_blank"
+              className="en"
             >
-              {item.link}
+              {item?.link}
             </Link>
           </Typography>
           <Box>
@@ -116,7 +116,7 @@ const Social: React.FC<Props> = ({
           data={data}
         />
       </Paper>
-      {arrId.includes(item.id) && (
+      {arrId.includes(item?.id) && (
         <AskDialog
           open={show}
           handleClickOpen={() => handleClickRemove(item.id)}

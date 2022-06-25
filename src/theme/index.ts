@@ -5,7 +5,7 @@ import { fontFamily } from "./styles";
 
 export const customTheme = (palette?: PaletteOptions, locale?: string) => {
   const loc = locale === "fa" ? faIR : enUS;
-  const dir = locale === "fa" ? "ltr" : "ltr";
+  const dir = locale === "fa" ? "rtl" : "ltr";
   return createTheme(
     {
       direction: dir,
@@ -32,6 +32,9 @@ export const customTheme = (palette?: PaletteOptions, locale?: string) => {
               display: "inherit",
               flexDirection: "inherit",
               minHeight: "inherit",
+            },
+            ".fa": {
+              fontFamily: "dana !important",
             },
             ".en": {
               fontFamily:

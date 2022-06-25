@@ -1,7 +1,7 @@
 import { Link } from "@mui";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
-import { Box, Button } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import { useColorMode } from "hooks";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
@@ -9,16 +9,14 @@ import { useRouter } from "next/router";
 const Mode: React.FC = (): React.ReactElement => {
   const { t } = useTranslation();
   const { locale, asPath } = useRouter();
-  const { mode, toggleColorMode } = useColorMode();
+  const { palette } = useTheme();
+  const { toggleColorMode } = useColorMode();
 
   return (
     <Box>
       <Button
         color={locale === "fa" ? "secondary" : "inherit"}
         sx={{
-          ...(locale === "en" && {
-            fontFamily: "dana",
-          }),
           "&:hover": {
             color: "text.secondary",
           },
@@ -26,6 +24,7 @@ const Mode: React.FC = (): React.ReactElement => {
         component={Link}
         href={asPath}
         locale="fa"
+        className="fa"
       >
         {t("persian")}
       </Button>
@@ -47,7 +46,7 @@ const Mode: React.FC = (): React.ReactElement => {
         sx={{ color: "text.secondary" }}
         onClick={toggleColorMode}
       >
-        {mode !== "dark" ? <WbSunnyIcon /> : <DarkModeIcon />}
+        {palette?.mode !== "dark" ? <WbSunnyIcon /> : <DarkModeIcon />}
       </Button>
     </Box>
   );

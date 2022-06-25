@@ -6,6 +6,7 @@ import rtlPlugin from "stylis-plugin-rtl";
 export function cacheRtl(rtl?: boolean) {
   return createCache({
     key: rtl ? "muirtl" : "muiltr",
+    prepend: true,
     stylisPlugins: rtl ? [prefixer, rtlPlugin] : [prefixer],
   });
 }

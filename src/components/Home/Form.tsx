@@ -70,7 +70,7 @@ const Form: React.FC<Props> = ({
                 return option.value ? t(option.value) : "";
               }}
               renderOption={(props, option: any) => {
-                const Icon = (icons as any)[option.icon];
+                const Icon = icons[option.icon as keyof typeof icons];
                 return (
                   <li {...props}>
                     <Icon sx={{ mr: 1 }} />

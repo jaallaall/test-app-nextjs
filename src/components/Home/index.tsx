@@ -1,9 +1,7 @@
 import { Breadcrumbs } from "@mui";
 import AddIcon from "@mui/icons-material/Add";
-import AddRoadIcon from "@mui/icons-material/AddRoad";
 import CloseIcon from "@mui/icons-material/Close";
 import {
-  Box,
   Button,
   Container,
   IconButton,
@@ -20,10 +18,11 @@ import AddSocial from "./AddSocial";
 import { breadcrumbs } from "./data";
 import Search from "./Search";
 import Social from "./Social";
+import StackLoading from "./Stack";
 
 const Home: React.FC = (): React.ReactElement => {
   const { t } = useTranslation();
-  const { data } = useSocials();
+  const { data, isLoading, isError, error } = useSocials();
   const res = data?.sort((a: any, b: any) => b.id - a.id);
   const [open, setOpen] = useState<boolean>(false);
   const [openSnack, setOpenSnack] = useState<boolean>(false);
@@ -64,33 +63,9 @@ const Home: React.FC = (): React.ReactElement => {
     setValue("");
   };
 
-  const dataResult = result.length > 0 ? result : res;
+  const dataResult = result?.length > 0 ? result : res;
 
-  const elm =
-    !dataResult?.length && !open ? (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: 250,
-        }}
-      >
-        <AddRoadIcon sx={{ fontSize: 150 }} />
-      </Box>
-    ) : (
-      dataResult?.map((item: Options) => {
-        return (
-          <Social
-            key={item.id}
-            item={item}
-            clearSearch={clearSearch}
-            setOpenSnack={setOpenSnack}
-            data={dataResult}
-          />
-        );
-      })
-    );
+  // console.log(isLoading);
 
   return (
     <>
@@ -114,14 +89,31 @@ const Home: React.FC = (): React.ReactElement => {
             >
               {t("addPath")}
             </Button>
-            <AddSocial
-              open={open}
-              setOpen={() => setOpen(false)}
-              data={dataResult}
-              setOpenSnack={setOpenSnack}
-            />
+            <StackLoading
+              isLoading={isLoading}
+              isError={isError}
+              error={error}
+              isIdle={dataResult?.length > 0 ? false : true && !open}
+            >
+              <AddSocial
+                open={open}
+                setOpen={() => setOpen(false)}
+                data={dataResult}
+                setOpenSnack={setOpenSnack}
+              />
 
-            {elm}
+              {dataResult?.map((item: Options) => {
+                return (
+                  <Social
+                    key={item.id}
+                    item={item}
+                    clearSearch={clearSearch}
+                    setOpenSnack={setOpenSnack}
+                    data={dataResult}
+                  />
+                );
+              })}
+            </StackLoading>
           </Paper>
         </Container>
       </Stack>
